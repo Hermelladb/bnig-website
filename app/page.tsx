@@ -8,10 +8,10 @@ const SERVICES = [
 ];
 
 const STATS = [
-  { value: "$140M+", label: "Capital facilitated" },
-  { value: "28",     label: "Engagements completed" },
-  { value: "9",      label: "Countries served" },
-  { value: "100%",   label: "Client confidentiality" },
+  { value: "54",    label: "African markets in scope" },
+  { value: "$68B+", label: "Annual infrastructure financing gap" },
+  { value: "5",     label: "Advisory services" },
+  { value: "100%",  label: "Client confidentiality" },
 ];
 
 const PROCESS = [
