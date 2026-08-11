@@ -70,6 +70,7 @@ export default function Home() {
           position: "absolute", inset: 0,
           backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=80')",
           backgroundSize: "cover", backgroundPosition: "center right",
+          backgroundAttachment: "fixed",
         }} />
 
         {/* Left-to-right gradient: solid navy on left fading to transparent → image shows fully on right */}
