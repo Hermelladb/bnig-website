@@ -62,73 +62,72 @@ const PROCESS = [
 export default function Home() {
   return (
     <>
-      {/* Hero — split layout */}
-      <section style={{ background: "var(--bg-primary)", minHeight: "calc(100vh - 68px)", display: "grid", gridTemplateColumns: "1fr 1fr" }} className="hero-grid">
+      {/* Hero — full bleed image, text fades in over it */}
+      <section style={{ position: "relative", minHeight: "calc(100vh - 68px)", overflow: "hidden", display: "flex", alignItems: "center" }}>
 
-        {/* Left: text */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 60px 80px 48px", maxWidth: 600, marginLeft: "auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-            <div style={{ width: 32, height: 1, background: "var(--accent)" }} />
-            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--accent)" }}>
-              Blue Nile Innovation Group
-            </p>
-          </div>
-
-          <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--text-primary)", marginBottom: 12 }}>
-            Investment readiness
-          </h1>
-          <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--accent)", marginBottom: 28 }}>
-            for Africa&apos;s most ambitious businesses
-          </h1>
-
-          <p style={{ fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.8, maxWidth: 460, marginBottom: 40 }}>
-            We prepare high-growth African companies to raise capital — from financial modelling and documentation to regulatory clearance and investor introductions.
-          </p>
-
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-            <Link href="/contact" style={{
-              fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
-              background: "var(--accent)", color: "#0c1a2e",
-              padding: "14px 32px", borderRadius: 4,
-            }}>
-              Start the conversation
-            </Link>
-            <Link href="/services" style={{
-              fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
-              color: "var(--accent)", padding: "14px 32px", borderRadius: 4,
-              border: "1px solid var(--border-strong)",
-            }}>
-              Our services →
-            </Link>
-          </div>
-
-          {/* Stats row */}
-          <div style={{ display: "flex", gap: 36, marginTop: 56, paddingTop: 40, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}>
-            {STATS.map(s => (
-              <div key={s.label}>
-                <div style={{ fontSize: 22, fontWeight: 700, color: "var(--accent)", letterSpacing: "-0.01em" }}>{s.value}</div>
-                <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, letterSpacing: "0.02em" }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: visual panel — replace background-image URL with your own photo */}
+        {/* Background image — full width behind everything */}
         <div style={{
-          position: "relative", overflow: "hidden",
-          backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=900&q=80')",
-          backgroundSize: "cover", backgroundPosition: "center",
-        }} className="hero-image">
-          {/* Gradient overlay so left edge blends into nav */}
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to right, var(--bg-primary) 0%, transparent 25%)",
-          }} />
-          {/* Bottom fade */}
-          <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0, height: 120,
-            background: "linear-gradient(to top, var(--bg-primary), transparent)",
-          }} />
+          position: "absolute", inset: 0,
+          backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=80')",
+          backgroundSize: "cover", backgroundPosition: "center right",
+        }} />
+
+        {/* Left-to-right gradient: solid navy on left fading to transparent → image shows fully on right */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to right, var(--bg-primary) 25%, rgba(12,26,46,0.85) 50%, rgba(12,26,46,0.25) 75%, rgba(12,26,46,0.05) 100%)",
+        }} />
+        {/* Top fade */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, var(--bg-primary) 0%, transparent 15%)" }} />
+        {/* Bottom fade */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, var(--bg-primary) 0%, transparent 20%)" }} />
+
+        {/* Content sits on top, left-aligned */}
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "100px 48px", width: "100%" }}>
+          <div style={{ maxWidth: 560 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+              <div style={{ width: 32, height: 1, background: "var(--accent)" }} />
+              <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--accent)" }}>
+                Blue Nile Innovation Group
+              </p>
+            </div>
+
+            <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--text-primary)", marginBottom: 12 }}>
+              Investment readiness
+            </h1>
+            <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--accent)", marginBottom: 28 }}>
+              for Africa&apos;s most ambitious businesses
+            </h1>
+
+            <p style={{ fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.8, maxWidth: 460, marginBottom: 40 }}>
+              We prepare high-growth African companies to raise capital — from financial modelling and documentation to regulatory clearance and investor introductions.
+            </p>
+
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+              <Link href="/contact" style={{
+                fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
+                background: "var(--accent)", color: "#0c1a2e", padding: "14px 32px", borderRadius: 4,
+              }}>
+                Start the conversation
+              </Link>
+              <Link href="/services" style={{
+                fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
+                color: "var(--accent)", padding: "14px 32px", borderRadius: 4,
+                border: "1px solid var(--border-strong)",
+              }}>
+                Our services →
+              </Link>
+            </div>
+
+            <div style={{ display: "flex", gap: 36, marginTop: 56, paddingTop: 40, borderTop: "1px solid rgba(201,168,76,0.25)", flexWrap: "wrap" }}>
+              {STATS.map(s => (
+                <div key={s.label}>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: "var(--accent)", letterSpacing: "-0.01em" }}>{s.value}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, letterSpacing: "0.02em" }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
