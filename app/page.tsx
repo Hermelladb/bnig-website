@@ -116,7 +116,7 @@ export default function Home() {
         {/* Right: visual panel — replace background-image URL with your own photo */}
         <div style={{
           position: "relative", overflow: "hidden",
-          backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=900&q=80')",
+          backgroundImage: "url('/nile-hero.jpg')",
           backgroundSize: "cover", backgroundPosition: "center",
         }} className="hero-image">
           {/* Gradient overlay so left edge blends into nav */}
