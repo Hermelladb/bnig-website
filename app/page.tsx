@@ -113,20 +113,22 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right: visual panel */}
+        {/* Right: visual panel — replace background-image URL with your own photo */}
         <div style={{
           position: "relative", overflow: "hidden",
           backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=900&q=80')",
           backgroundSize: "cover", backgroundPosition: "center",
         }} className="hero-image">
-          {/* Left fade — blends into text area */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, var(--bg-primary) 0%, transparent 45%)" }} />
-          {/* Right fade */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, var(--bg-primary) 0%, transparent 30%)" }} />
-          {/* Top fade */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, var(--bg-primary) 0%, transparent 30%)" }} />
+          {/* Gradient overlay so left edge blends into nav */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to right, var(--bg-primary) 0%, transparent 25%)",
+          }} />
           {/* Bottom fade */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, var(--bg-primary) 0%, transparent 30%)" }} />
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, height: 120,
+            background: "linear-gradient(to top, var(--bg-primary), transparent)",
+          }} />
         </div>
       </section>
 
