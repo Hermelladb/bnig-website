@@ -33,7 +33,7 @@ const SERVICES = [
     number: "05",
     title: "Investor Relations & Access",
     tagline: "The right introduction at the right time.",
-    body: "We maintain active relationships with DFIs, impact investors, private equity funds, and venture capital firms deploying capital across Africa. Once you are ready, we make targeted, warm introductions — not cold outreach — to investors whose mandate genuinely matches your profile.",
+    body: "We connect businesses that are ready with capital partners whose mandate aligns with their sector, stage, and geography.",
     deliverables: ["Curated longlist of matched investors", "Warm introductions with briefing notes", "Investor meeting preparation", "Term sheet negotiation support"],
   },
 ];
