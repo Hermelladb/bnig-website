@@ -31,7 +31,7 @@ const HOW_HEARD  = ["Referral from colleague","LinkedIn","Google","Conference / 
 type F = Record<string, string>;
 
 const INIT: F = {
-  company_name:"",sector:"",country:"",year_founded:"",legal_structure:"",stage:"",description:"",
+  company_name:"",sector:"",country:"",year_founded:"",legal_structure:"",stage:"",description:"",founder_gender:"",employees_fulltime:"",employees_parttime:"",pitch_deck_url:"",
   capital_amount:"",capital_currency:"USD",capital_type:"",use_of_funds:"",timeline:"",previously_raised:"",previous_raise_details:"",
   revenue_y1:"",revenue_y2:"",revenue_y3:"",gross_margin_pct:"",fixed_opex_annual:"",current_debt:"",debt_interest_rate:"",cash_on_hand:"",has_audited_accounts:"",audited_years:"",
   growth_y1:"",growth_y2:"",growth_y3:"",growth_y4:"",growth_y5:"",annual_capex:"",tax_rate:"",receivables_days:"",payables_days:"",inventory_days:"",
@@ -48,6 +48,7 @@ export default function Apply() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted]   = useState(false);
   const [error, setError]           = useState("");
+  const [pitchDeckFile, setPitchDeckFile] = useState<File | null>(null);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -129,7 +130,36 @@ export default function Apply() {
         <Sel k="legal_structure" label="Legal structure" opts={["Limited Company","Partnership","Sole Trader","NGO / Non-profit","Joint Venture","Other"]} />
       </div>
       <Sel k="stage" label="Business stage" opts={["Early-stage / Startup","Growth","Expansion / Scale-up","Pre-IPO","Established"]} />
-      <Txt k="description" label="What does your business do?" ph="Describe your business, what you offer, who you serve, and your business model." rows={4} req />
+      <Txt k="description" label="Explain your startup" ph="Elevator pitch" rows={4} req />
+      <div>
+        <label style={lbl}>Gender of founder / CEO</label>
+        <Radio k="founder_gender" opts={["Male","Female","Non-binary","Prefer not to say"]} />
+      </div>
+      <div style={g2}>
+        <Num k="employees_fulltime" label="# of Full-time employees" ph="12" h="Permanent, full-time staff on payroll" />
+        <Num k="employees_parttime" label="# of Part-time / contract employees" ph="5" h="Part-time, casual, or contract workers" />
+      </div>
+      <div>
+        <label style={lbl}>Pitch deck <span style={{ fontWeight: 400, color: "#aeb9c7" }}>(optional)</span></label>
+        <label style={{
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          gap: 8, padding: "22px 16px", cursor: "pointer",
+          border: "1.5px dashed #d0d5dd", borderRadius: 6, background: "#fafafa",
+          transition: "border-color 0.15s",
+        }}>
+          <input type="file" accept=".pdf,.ppt,.pptx" style={{ display: "none" }}
+            onChange={e => setPitchDeckFile(e.target.files?.[0] || null)} />
+          <span style={{ fontSize: 22, color: "#aeb9c7" }}>↑</span>
+          {pitchDeckFile
+            ? <span style={{ fontSize: 13, color: "#1a1a1a", fontWeight: 600 }}>{pitchDeckFile.name}</span>
+            : <>
+                <span style={{ fontSize: 13, color: "#52606f" }}>Drop your deck here, or <span style={{ color: "#d9a441" }}>browse</span></span>
+                <span style={{ fontSize: 11, color: "#aeb9c7" }}>PDF or PowerPoint · max 20 MB</span>
+              </>
+          }
+        </label>
+        <p style={hint}>Uploaded files are stored securely and treated with strict confidentiality.</p>
+      </div>
     </div>,
 
     /* 2 — Capital Raise */
@@ -316,12 +346,23 @@ export default function Apply() {
     }
     setSubmitting(true); setError("");
     try {
+      let pitchDeckUrl = "";
+      if (pitchDeckFile) {
+        const ext = pitchDeckFile.name.split(".").pop();
+        const filename = `${Date.now()}-${form.company_name.replace(/\s+/g, "-").toLowerCase()}.${ext}`;
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("pitch-decks")
+          .upload(filename, pitchDeckFile, { contentType: pitchDeckFile.type });
+        if (!uploadErr && uploadData) {
+          pitchDeckUrl = supabase.storage.from("pitch-decks").getPublicUrl(uploadData.path).data.publicUrl;
+        }
+      }
       const { error: err } = await supabase.from("intake_submissions").insert({
         company_name: form.company_name, sector: form.sector||null, country: form.country||null,
         stage: form.stage||null, capital_amount: form.capital_amount ? parseFloat(form.capital_amount) : null,
         capital_currency: form.capital_currency, capital_type: form.capital_type||null,
         contact_name: form.contact_name, contact_email: form.contact_email,
-        business_overview: { company_name:form.company_name, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description },
+        business_overview: { company_name:form.company_name, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description, founder_gender:form.founder_gender, employees_fulltime:form.employees_fulltime, employees_parttime:form.employees_parttime, pitch_deck_url:pitchDeckUrl },
         capital_raise: { amount:form.capital_amount, currency:form.capital_currency, type:form.capital_type, use_of_funds:form.use_of_funds, timeline:form.timeline, previously_raised:form.previously_raised, previous_raise_details:form.previous_raise_details },
         financials: { revenue_y1:form.revenue_y1, revenue_y2:form.revenue_y2, revenue_y3:form.revenue_y3, gross_margin_pct:form.gross_margin_pct, fixed_opex_annual:form.fixed_opex_annual, current_debt:form.current_debt, debt_interest_rate:form.debt_interest_rate, cash_on_hand:form.cash_on_hand, has_audited_accounts:form.has_audited_accounts, audited_years:form.audited_years },
         projections: { growth_y1:form.growth_y1, growth_y2:form.growth_y2, growth_y3:form.growth_y3, growth_y4:form.growth_y4, growth_y5:form.growth_y5, annual_capex:form.annual_capex, tax_rate:form.tax_rate, receivables_days:form.receivables_days, payables_days:form.payables_days, inventory_days:form.inventory_days },
