@@ -19,7 +19,7 @@ const SERVICES = [
     number: "03",
     title: "Transaction Documentation",
     tagline: "Tell your story with precision.",
-    body: "The best businesses lose mandates to weaker ones because their documentation doesn't hold up. We write investment memoranda, information memoranda, executive summaries, and pitch materials that communicate clearly, demonstrate rigour, and hold up under due diligence.",
+    body: "The best businesses lose mandates to weaker ones because their documentation doesn't hold up. We prepare the materials your business needs to communicate clearly and withstand the scrutiny of institutional due diligence.",
     deliverables: ["Investment memorandum (IM)", "Executive summary", "Pitch deck narrative", "Data room structure and content"],
   },
   {
