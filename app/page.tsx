@@ -260,8 +260,7 @@ export default function Home() {
                 Discipline over noise.
               </h2>
               <p style={{ color: "#52606f", fontSize: 16, maxWidth: 440, lineHeight: 1.8 }}>
-                We focus on what actually moves the needle for investors — not optics, not storytelling.
-                Rigour, substance, and a deep understanding of the African capital landscape.
+                We focus on what actually moves the needle for investors — rigour, substance, and a deep understanding of the African capital landscape.
               </p>
               <ul style={{ listStyle: "none", marginTop: 35 }}>
                 {APPROACH.map(item => (
