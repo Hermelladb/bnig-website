@@ -6,14 +6,14 @@ const SERVICES = [
     title: "Investment Readiness Assessment",
     tagline: "Know exactly where you stand.",
     body: "Before any capital raise begins, we conduct a structured assessment of your business against the criteria institutional investors apply. We examine financial performance, governance, regulatory compliance, management depth, and market positioning — and give you a clear, unvarnished picture of what investors will find.",
-    deliverables: ["Investor readiness scorecard", "Gap analysis with prioritised actions", "Tailored roadmap to close the gaps"],
+    deliverables: ["Structured readiness evaluation", "Gap analysis with prioritised actions", "Tailored roadmap to close the gaps"],
   },
   {
     number: "02",
     title: "Financial Modelling",
     tagline: "Numbers investors can trust.",
-    body: "We build three-statement financial models — income statement, balance sheet, and cash flow — with scenario analysis (base, bull, bear) and the valuation outputs DFIs and private equity funds expect. Every model is built for scrutiny: clearly structured, assumption-documented, and stress-tested.",
-    deliverables: ["Integrated three-statement model", "Base, bull, and bear scenarios", "Valuation analysis (DCF, comparable transactions)", "Lender/investor-ready outputs: IRR, DSCR, NPV"],
+    body: "Financial analysis built to the standard institutional investors, DFIs, and private equity funds require. Rigorous, clearly structured, and built to withstand the scrutiny of professional due diligence.",
+    deliverables: ["Investor-grade financial model", "Scenario and sensitivity analysis", "Valuation and returns outputs", "Lender and investor-ready documentation"],
   },
   {
     number: "03",
