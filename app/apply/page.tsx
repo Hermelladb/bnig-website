@@ -10,6 +10,7 @@ const supabase = createClient(
 );
 
 const STEPS = [
+  "Contact Details",
   "Business Overview",
   "Capital Raise",
   "Financial Performance",
@@ -18,7 +19,6 @@ const STEPS = [
   "Regulatory",
   "Management Team",
   "Market Position",
-  "Contact Details",
 ];
 
 const SECTORS   = ["Agriculture","Energy","Fintech","Healthcare","Infrastructure","Logistics","Manufacturing","Real Estate","Technology","Telecoms","Other"];
@@ -118,7 +118,26 @@ export default function Apply() {
   /* ── step panels ── */
   const steps = [
 
-    /* 1 — Business Overview */
+    /* 1 — Contact Details */
+    <div key={1} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+      <div style={g2}>
+        <Inp k="contact_name" label="Your full name" ph="Jane Mwangi" req />
+        <Inp k="contact_role" label="Your title / role" ph="CEO & Founder" req />
+      </div>
+      <div style={g2}>
+        <Inp k="contact_email" label="Email address" ph="jane@sunriseenergy.co.ke" type="email" req />
+        <Inp k="contact_phone" label="Phone number" ph="+254 700 000 000" />
+      </div>
+      <Inp k="best_time" label="Best time / timezone to reach you" ph="Mornings EAT (GMT+3)" />
+      <Sel k="how_did_you_hear" label="How did you hear about Blue Nile Innovation Group?" opts={HOW_HEARD} />
+      <div style={{ padding:"16px 18px", background:"rgba(217,164,65,0.07)", border:"1px solid rgba(217,164,65,0.25)", borderRadius:8 }}>
+        <p style={{ fontSize:13, color:"#52606f", lineHeight:1.75, margin:0 }}>
+          <strong style={{ color:"#1a1a1a" }}>Confidentiality:</strong> All information submitted through this form is treated with strict confidentiality. It is used solely to assess your business and prepare our recommendations. It is never shared with third parties without your explicit consent.
+        </p>
+      </div>
+    </div>,
+
+    /* 2 — Business Overview */
     <div key={1} style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <Inp k="company_name" label="Company name" ph="Sunrise Energy Ltd" req />
       <div style={g2}>
@@ -319,24 +338,6 @@ export default function Apply() {
       <Txt k="revenue_model" label="Revenue model" ph="How do you generate revenue? e.g. subscription, transaction fee, long-term contracts, one-off sales." rows={3} />
     </div>,
 
-    /* 9 — Contact Details */
-    <div key={9} style={{ display:"flex", flexDirection:"column", gap:18 }}>
-      <div style={g2}>
-        <Inp k="contact_name" label="Your full name" ph="Jane Mwangi" req />
-        <Inp k="contact_role" label="Your title / role" ph="CEO & Founder" req />
-      </div>
-      <div style={g2}>
-        <Inp k="contact_email" label="Email address" ph="jane@sunriseenergy.co.ke" type="email" req />
-        <Inp k="contact_phone" label="Phone number" ph="+254 700 000 000" />
-      </div>
-      <Inp k="best_time" label="Best time / timezone to reach you" ph="Mornings EAT (GMT+3)" />
-      <Sel k="how_did_you_hear" label="How did you hear about Blue Nile Innovation Group?" opts={HOW_HEARD} />
-      <div style={{ padding:"16px 18px", background:"rgba(217,164,65,0.07)", border:"1px solid rgba(217,164,65,0.25)", borderRadius:8 }}>
-        <p style={{ fontSize:13, color:"#52606f", lineHeight:1.75, margin:0 }}>
-          <strong style={{ color:"#1a1a1a" }}>Confidentiality:</strong> All information submitted through this form is treated with strict confidentiality. It is used solely to assess your business and prepare our recommendations. It is never shared with third parties without your explicit consent.
-        </p>
-      </div>
-    </div>,
   ];
 
   /* ── submit ── */
