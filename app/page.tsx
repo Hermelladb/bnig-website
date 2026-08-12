@@ -1,234 +1,361 @@
 import Link from "next/link";
 
+const FEATURES = [
+  {
+    icon: "◈",
+    title: "Readiness Assessment",
+    body: "A clear-eyed view of where your business stands against what institutional investors expect to see.",
+  },
+  {
+    icon: "↗",
+    title: "Institutional Standards",
+    body: "We build to the rigour that DFIs, private equity, and institutional investors demand.",
+  },
+  {
+    icon: "◉",
+    title: "African Markets",
+    body: "Deep knowledge across 54 African jurisdictions, regulatory environments, and capital markets.",
+  },
+  {
+    icon: "◆",
+    title: "Strict Confidentiality",
+    body: "Your strategy, financials, and negotiations remain fully protected at every stage.",
+  },
+];
+
 const SERVICES = [
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#c9a84c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/>
-        <path d="M4 24c0-4 4-7 10-7s10 3 10 7"/>
-      </svg>
-    ),
+    num: "01",
     title: "Investment Readiness",
-    body: "A structured assessment of your business against the criteria institutional investors apply — with a clear roadmap to close the gaps.",
+    body: "A structured evaluation of your business against the criteria institutional investors apply — with a clear path to closing the gaps.",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#c9a84c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="22" height="22" rx="2"/>
-        <path d="M8 18l4-5 4 3 5-7"/>
-      </svg>
-    ),
+    num: "02",
     title: "Financial Modelling",
-    body: "Three-statement models, scenario analysis, and valuation built to the standard institutional investors expect.",
+    body: "Investor-grade financial analysis built to the rigour that development finance institutions and private equity funds demand.",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#c9a84c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 3l10 4v8c0 5-4 9-10 11C8 24 4 20 4 15V7z"/>
-        <path d="M10 14l3 3 5-5"/>
-      </svg>
-    ),
+    num: "03",
     title: "Regulatory Advisory",
-    body: "Navigate licences, approvals, and compliance requirements across African jurisdictions — before they become blockers.",
+    body: "Navigate licences, approvals, and compliance requirements across African jurisdictions before they become deal blockers.",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#c9a84c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="8" cy="14" r="4"/>
-        <circle cx="20" cy="8" r="4"/>
-        <circle cx="20" cy="20" r="4"/>
-        <path d="M12 12l5-3M12 16l5 3"/>
-      </svg>
-    ),
+    num: "04",
     title: "Investor Access",
-    body: "Warm introductions to DFIs, private equity, and VC funds actively deploying in your sector and geography.",
+    body: "Targeted introductions to DFIs, private equity, and VC funds actively deploying capital in your sector and geography.",
   },
+];
+
+const APPROACH = [
+  "African capital market expertise",
+  "Institutional-grade preparation",
+  "Confidential and discreet advisory",
+  "Outcome-focused engagement",
 ];
 
 const STATS = [
   { value: "54",    label: "African markets in scope" },
   { value: "$68B+", label: "Annual infrastructure financing gap" },
-  { value: "5",     label: "Advisory services" },
+  { value: "4",     label: "Core advisory services" },
   { value: "100%",  label: "Client confidentiality" },
-];
-
-const PROCESS = [
-  { step: "01", title: "Readiness assessment",  body: "We evaluate where your business stands against what investors need to see — and identify exactly what needs to change." },
-  { step: "02", title: "Build the foundations", body: "Financial model, business plan, regulatory checklist, and investor materials — built with rigour and precision." },
-  { step: "03", title: "Prepare for scrutiny",  body: "Data room setup, due diligence preparation, and rehearsal for the questions investors will ask." },
-  { step: "04", title: "Connect to capital",    body: "Targeted introductions to the right investors for your stage, sector, and geography." },
 ];
 
 export default function Home() {
   return (
     <>
-      {/* Hero — full bleed image, text fades in over it */}
-      <section style={{ position: "relative", minHeight: "calc(100vh - 68px)", overflow: "hidden", display: "flex", alignItems: "center" }}>
-
-        {/* Background image — full width behind everything */}
+      {/* ─── HERO ─── */}
+      <section style={{
+        minHeight: "calc(100vh - 68px)",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        backgroundImage: `
+          linear-gradient(90deg,
+            rgba(3,26,53,0.98) 0%,
+            rgba(3,26,53,0.92) 35%,
+            rgba(3,26,53,0.60) 58%,
+            rgba(3,26,53,0.15) 100%
+          ),
+          url('/image-1.jpg')
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=80')",
-          backgroundSize: "cover", backgroundPosition: "center right",
-          backgroundAttachment: "fixed",
+          background: "linear-gradient(180deg, rgba(3,26,53,0.10), rgba(3,26,53,0.42))",
+          pointerEvents: "none",
         }} />
 
-        {/* Left-to-right gradient: solid navy on left fading to transparent → image shows fully on right */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to right, var(--bg-primary) 25%, rgba(12,26,46,0.85) 50%, rgba(12,26,46,0.25) 75%, rgba(12,26,46,0.05) 100%)",
-        }} />
-        {/* Top fade */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, var(--bg-primary) 0%, transparent 15%)" }} />
-        {/* Bottom fade */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, var(--bg-primary) 0%, transparent 20%)" }} />
-
-        {/* Content sits on top, left-aligned */}
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "100px 48px", width: "100%" }}>
-          <div style={{ maxWidth: 560 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-              <div style={{ width: 32, height: 1, background: "var(--accent)" }} />
-              <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--accent)" }}>
-                Blue Nile Innovation Group
-              </p>
-            </div>
-
-            <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--text-primary)", marginBottom: 12 }}>
-              Investment readiness
-            </h1>
-            <h1 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: "var(--accent)", marginBottom: 28 }}>
-              for Africa&apos;s most ambitious businesses
-            </h1>
-
-            <p style={{ fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.8, maxWidth: 460, marginBottom: 40 }}>
-              We prepare high-growth African companies to raise capital — from financial modelling and documentation to regulatory clearance and investor introductions.
+        <div style={{ position: "relative", zIndex: 1, width: "min(92%, 1280px)", margin: "0 auto", padding: "80px 0" }}>
+          <div style={{ maxWidth: 650 }}>
+            <p style={{
+              color: "var(--accent)", fontSize: 13, fontWeight: 600,
+              letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 20,
+            }}>
+              Blue Nile Innovation Group
             </p>
 
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <Link href="/contact" style={{
-                fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
-                background: "var(--accent)", color: "#0c1a2e", padding: "14px 32px", borderRadius: 4,
+            <h1 style={{
+              fontFamily: "var(--serif)",
+              fontSize: "clamp(44px, 6vw, 80px)",
+              lineHeight: 1.05, fontWeight: 500, marginBottom: 28,
+            }}>
+              Investment readiness<br />
+              <span style={{ color: "var(--accent)" }}>for Africa&apos;s most ambitious businesses.</span>
+            </h1>
+
+            <p style={{ color: "#d7dde5", fontSize: 18, maxWidth: 540, marginBottom: 38, lineHeight: 1.75 }}>
+              We prepare high-growth African companies to raise institutional capital — from documentation
+              and due diligence to regulatory clearance and investor introductions.
+            </p>
+
+            <Link href="/contact" style={{
+              display: "inline-flex", alignItems: "center",
+              background: "var(--accent)", color: "var(--navy)",
+              padding: "16px 30px", fontWeight: 700, fontSize: 14,
+              border: "1px solid var(--accent)",
+              transition: "all 0.25s",
+            }}>
+              Start the conversation
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ─── FEATURE STRIP ─── */}
+      <section style={{
+        background: "var(--navy)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
+      }}>
+        <div style={{ width: "min(92%, 1280px)", margin: "0 auto" }}>
+          <div className="features-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+            {FEATURES.map((f, i) => (
+              <div key={f.title} style={{
+                padding: "55px 35px", textAlign: "center",
+                borderRight: i < FEATURES.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none",
               }}>
-                Start the conversation
-              </Link>
+                <div style={{ fontSize: 34, color: "var(--accent)", marginBottom: 22 }}>{f.icon}</div>
+                <h3 style={{ fontFamily: "var(--serif)", fontSize: 21, marginBottom: 12 }}>{f.title}</h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: 14, maxWidth: 220, margin: "auto", lineHeight: 1.65 }}>{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* ─── ABOUT ─── */}
+      <section style={{ background: "var(--navy-dark)", padding: "100px 0" }} id="about">
+        <div style={{ width: "min(92%, 1280px)", margin: "0 auto" }}>
+          <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+
+            {/* Image with gold offset border */}
+            <div style={{ position: "relative", marginRight: 18 }}>
+              <div style={{
+                position: "absolute",
+                top: 18, right: -18, bottom: -18, left: 18,
+                border: "1px solid var(--accent)", zIndex: 0,
+              }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/image-1.jpg"
+                alt="Blue Nile Innovation Group"
+                style={{ width: "100%", height: 500, objectFit: "cover", position: "relative", zIndex: 1 }}
+              />
+            </div>
+
+            {/* Text */}
+            <div style={{ paddingLeft: 20 }}>
+              <p style={{ color: "var(--accent)", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 18 }}>
+                About Us
+              </p>
+              <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 500, lineHeight: 1.1, marginBottom: 25 }}>
+                A specialist firm built for African capital markets.
+              </h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: 16, lineHeight: 1.85, marginBottom: 20 }}>
+                Blue Nile Innovation Group is an African-focused investment readiness advisory firm. We work
+                with founders, management teams, and business owners who are serious about raising institutional
+                capital — and who understand that preparation determines outcomes.
+              </p>
+              <p style={{ color: "var(--text-secondary)", fontSize: 16, lineHeight: 1.85, marginBottom: 36 }}>
+                We bring the rigour and standards that development finance institutions, private equity,
+                and institutional investors expect — tailored to the realities of African markets.
+              </p>
               <Link href="/services" style={{
-                fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
-                color: "var(--accent)", padding: "14px 32px", borderRadius: 4,
-                border: "1px solid var(--border-strong)",
+                display: "inline-flex", alignItems: "center",
+                background: "var(--accent)", color: "var(--navy)",
+                padding: "14px 28px", fontWeight: 700, fontSize: 14,
+                border: "1px solid var(--accent)",
               }}>
-                Our services →
+                Our services
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div style={{ display: "flex", gap: 36, marginTop: 56, paddingTop: 40, borderTop: "1px solid rgba(201,168,76,0.25)", flexWrap: "wrap" }}>
-              {STATS.map(s => (
-                <div key={s.label}>
-                  <div style={{ fontSize: 22, fontWeight: 700, color: "var(--accent)", letterSpacing: "-0.01em" }}>{s.value}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, letterSpacing: "0.02em" }}>{s.label}</div>
-                </div>
-              ))}
+
+      {/* ─── SERVICES ─── */}
+      <section style={{ background: "var(--navy)", padding: "100px 0" }} id="services">
+        <div style={{ width: "min(92%, 1280px)", margin: "0 auto" }}>
+
+          <div style={{ textAlign: "center", marginBottom: 60 }}>
+            <p style={{ color: "var(--accent)", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 18 }}>
+              Our Services
+            </p>
+            <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(36px, 5vw, 62px)", fontWeight: 500, lineHeight: 1.1, marginBottom: 25 }}>
+              Capital readiness, end to end.
+            </h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: 17, maxWidth: 600, margin: "auto", lineHeight: 1.7 }}>
+              From first assessment to final investor introduction, we cover every stage of the journey to institutional capital.
+            </p>
+          </div>
+
+          <div className="services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+            {SERVICES.map(s => (
+              <article key={s.num} style={{
+                border: "1px solid rgba(255,255,255,0.10)",
+                padding: "45px 35px",
+                background: "rgba(255,255,255,0.02)",
+                transition: "border-color 0.3s, transform 0.3s",
+              }}>
+                <div style={{ color: "var(--accent)", fontFamily: "var(--serif)", fontSize: 28, marginBottom: 28 }}>{s.num}</div>
+                <h3 style={{ fontFamily: "var(--serif)", fontSize: 26, marginBottom: 16 }}>{s.title}</h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.75 }}>{s.body}</p>
+              </article>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ─── APPROACH (light section with image) ─── */}
+      <section id="approach">
+        <div className="approach-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 580 }}>
+
+          {/* Full-bleed image column */}
+          <div style={{
+            backgroundImage: "url('/image-2.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            minHeight: 480,
+          }} />
+
+          {/* Content column */}
+          <div style={{
+            background: "var(--off-white)",
+            display: "flex", alignItems: "center",
+            padding: "80px 70px",
+          }}>
+            <div>
+              <p style={{ color: "#b8832a", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 18 }}>
+                Our Approach
+              </p>
+              <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(32px, 4vw, 54px)", fontWeight: 500, lineHeight: 1.1, marginBottom: 25, color: "var(--navy)" }}>
+                Discipline over noise.
+              </h2>
+              <p style={{ color: "#52606f", fontSize: 16, maxWidth: 440, lineHeight: 1.8 }}>
+                We focus on what actually moves the needle for investors — not optics, not storytelling.
+                Rigour, substance, and a deep understanding of the African capital landscape.
+              </p>
+              <ul style={{ listStyle: "none", marginTop: 35 }}>
+                {APPROACH.map(item => (
+                  <li key={item} style={{
+                    padding: "16px 0", borderBottom: "1px solid #d8dce0",
+                    fontWeight: 600, color: "var(--navy)",
+                  }}>
+                    <span style={{ color: "var(--accent)", marginRight: 14, fontWeight: 400 }}>—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section style={{ background: "var(--bg-section)", padding: "80px 24px", borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <div style={{ width: 28, height: 1, background: "var(--accent)" }} />
-            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)" }}>What we do</p>
-          </div>
-          <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 48, color: "var(--text-primary)" }}>
-            End-to-end investment readiness
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 1, border: "1px solid var(--border)" }}>
-            {SERVICES.map((s, i) => (
-              <div key={s.title} style={{
-                background: "var(--bg-card)", padding: "36px 28px",
-                borderRight: i < SERVICES.length - 1 ? "1px solid var(--border)" : "none",
-                transition: "background 0.2s",
-              }}>
-                <div style={{ marginBottom: 20 }}>{s.icon}</div>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)", marginBottom: 12, letterSpacing: "-0.01em" }}>{s.title}</h3>
-                <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>{s.body}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <Link href="/services" style={{ fontSize: 13, color: "var(--accent)", fontWeight: 500, letterSpacing: "0.02em" }}>See full service details →</Link>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats — gold bordered boxes */}
-      <section style={{ background: "var(--bg-primary)", padding: "80px 24px", borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
-            {STATS.map(s => (
+      {/* ─── STATS ─── */}
+      <section style={{
+        background: "var(--navy)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
+      }}>
+        <div style={{ width: "min(92%, 1280px)", margin: "0 auto" }}>
+          <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+            {STATS.map((s, i) => (
               <div key={s.label} style={{
-                border: "1px solid var(--accent)", borderRadius: 4,
-                padding: "32px 28px", textAlign: "center",
-                background: "rgba(201, 168, 76, 0.04)",
+                textAlign: "center", padding: "60px 25px",
+                borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none",
               }}>
-                <div style={{ fontSize: 36, fontWeight: 700, color: "var(--accent)", letterSpacing: "-0.02em", marginBottom: 10 }}>{s.value}</div>
-                <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, letterSpacing: "0.02em" }}>{s.label}</div>
+                <div style={{ color: "var(--accent)", fontFamily: "var(--serif)", fontSize: 48, lineHeight: 1, marginBottom: 15 }}>
+                  {s.value}
+                </div>
+                <div style={{ color: "var(--text-secondary)", fontSize: 13, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  {s.label}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How we work */}
-      <section style={{ background: "var(--bg-section)", padding: "80px 24px", borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <div style={{ width: 28, height: 1, background: "var(--accent)" }} />
-            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)" }}>How we work</p>
-          </div>
-          <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 48, color: "var(--text-primary)" }}>
-            A structured path to capital
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-            {PROCESS.map((p, i) => (
-              <div key={p.step} style={{
-                padding: "32px 28px",
-                borderLeft: i === 0 ? "none" : "1px solid var(--border)",
-                borderTop: "2px solid " + (i === 0 ? "var(--accent)" : "var(--border)"),
-              }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.12em", marginBottom: 16 }}>{p.step}</div>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)", marginBottom: 10 }}>{p.title}</h3>
-                <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>{p.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section style={{ background: "var(--bg-primary)", padding: "80px 24px", borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ width: 40, height: 1, background: "var(--accent)", margin: "0 auto 24px" }} />
-          <h2 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 700, color: "var(--text-primary)", marginBottom: 16, letterSpacing: "-0.02em" }}>
-            Ready to become investor-ready?
+      {/* ─── CTA ─── */}
+      <section style={{
+        minHeight: 520,
+        backgroundImage: `
+          linear-gradient(rgba(3,26,53,0.82), rgba(3,26,53,0.82)),
+          url('/image-3.jpg')
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        alignItems: "center",
+        textAlign: "center",
+      }}>
+        <div style={{ width: "min(92%, 750px)", margin: "0 auto", padding: "80px 0" }}>
+          <p style={{ color: "var(--accent)", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 20 }}>
+            Let&apos;s Talk
+          </p>
+          <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 500, lineHeight: 1.1, marginBottom: 25 }}>
+            Ready to pursue institutional capital?
           </h2>
-          <p style={{ fontSize: 15, color: "var(--text-secondary)", marginBottom: 36, lineHeight: 1.7 }}>
-            Tell us about your business and where you&apos;re trying to get to. We&apos;ll be honest about whether we can help — and how.
+          <p style={{ color: "#d1d8e0", fontSize: 18, lineHeight: 1.75, margin: "0 auto 36px", maxWidth: 600 }}>
+            Tell us about your business and where you&apos;re trying to get to. We&apos;ll be direct about whether and how we can help.
           </p>
           <Link href="/contact" style={{
-            fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
-            background: "var(--accent)", color: "#0c1a2e",
-            padding: "14px 36px", borderRadius: 4, display: "inline-block",
+            display: "inline-flex", alignItems: "center",
+            background: "var(--accent)", color: "var(--navy)",
+            padding: "16px 30px", fontWeight: 700, fontSize: 14,
+            border: "1px solid var(--accent)",
           }}>
             Start the conversation
           </Link>
         </div>
       </section>
 
+
       <style>{`
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-image { display: none !important; }
+        @media (max-width: 1000px) {
+          .features-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+          .about-grid     { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .approach-grid  { grid-template-columns: 1fr !important; }
+          .services-grid  { grid-template-columns: 1fr !important; }
+          .stats-grid     { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 650px) {
+          .features-grid  { grid-template-columns: 1fr !important; }
+          .stats-grid     { grid-template-columns: 1fr !important; }
+        }
+        article:hover {
+          border-color: var(--accent) !important;
+          transform: translateY(-4px);
         }
       `}</style>
     </>
