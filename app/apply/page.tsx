@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 
@@ -30,6 +30,76 @@ const HOW_HEARD  = ["Referral from colleague","LinkedIn","Google","Conference / 
 
 type F = Record<string, string>;
 
+/* ── module-level styles (static — defined once, not per render) ── */
+const inp: React.CSSProperties = { width:"100%", padding:"10px 13px", fontSize:14, border:"1px solid #d0d5dd", borderRadius:6, outline:"none", color:"#1a1a1a", background:"#fff", transition:"border-color 0.15s", fontFamily:"inherit" };
+const lbl: React.CSSProperties = { display:"block", fontSize:12, fontWeight:600, color:"#52606f", marginBottom:5, letterSpacing:"0.01em" };
+const hint: React.CSSProperties = { fontSize:11, color:"#aeb9c7", marginTop:3 };
+const g2: React.CSSProperties  = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 };
+
+/* ── form context (avoids re-defining components inside render) ── */
+const FormCtx = createContext<{ form: F; set: (k: string, v: string) => void }>({ form: {}, set: () => {} });
+
+function Inp({ k, label, ph, type="text", req, h }: { k:string; label:string; ph?:string; type?:string; req?:boolean; h?:string }) {
+  const { form, set } = useContext(FormCtx);
+  return (
+    <div>
+      <label style={lbl}>{label}{req && " *"}</label>
+      <input type={type} required={req} value={form[k]||""} placeholder={ph} onChange={e => set(k, e.target.value)} style={inp} />
+      {h && <p style={hint}>{h}</p>}
+    </div>
+  );
+}
+function Sel({ k, label, opts, h }: { k:string; label:string; opts:string[]; h?:string }) {
+  const { form, set } = useContext(FormCtx);
+  return (
+    <div>
+      <label style={lbl}>{label}</label>
+      <select value={form[k]||""} onChange={e => set(k, e.target.value)} style={{ ...inp, appearance:"none" }}>
+        <option value="">Select…</option>
+        {opts.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+      {h && <p style={hint}>{h}</p>}
+    </div>
+  );
+}
+function Txt({ k, label, ph, rows=3, req, h }: { k:string; label:string; ph?:string; rows?:number; req?:boolean; h?:string }) {
+  const { form, set } = useContext(FormCtx);
+  return (
+    <div>
+      <label style={lbl}>{label}{req && " *"}</label>
+      <textarea required={req} rows={rows} value={form[k]||""} placeholder={ph} onChange={e => set(k, e.target.value)} style={{ ...inp, resize:"none", lineHeight:1.6 }} />
+      {h && <p style={hint}>{h}</p>}
+    </div>
+  );
+}
+function Num({ k, label, ph, prefix, h }: { k:string; label:string; ph?:string; prefix?:string; h?:string }) {
+  const { form, set } = useContext(FormCtx);
+  return (
+    <div>
+      <label style={lbl}>{label}</label>
+      <div style={{ display:"flex" }}>
+        {prefix && <span style={{ padding:"10px 11px", background:"#f5f5f5", border:"1px solid #d0d5dd", borderRight:"none", borderRadius:"6px 0 0 6px", fontSize:13, color:"#52606f", whiteSpace:"nowrap" }}>{prefix}</span>}
+        <input type="number" value={form[k]||""} placeholder={ph} onChange={e => set(k, e.target.value)}
+          style={{ ...inp, borderRadius: prefix ? "0 6px 6px 0" : 6 }} />
+      </div>
+      {h && <p style={hint}>{h}</p>}
+    </div>
+  );
+}
+function Radio({ k, opts }: { k:string; opts:string[] }) {
+  const { form, set } = useContext(FormCtx);
+  return (
+    <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+      {opts.map(v => (
+        <label key={v} style={{ display:"flex", alignItems:"center", gap:8, padding:"9px 14px", border:`1px solid ${form[k]===v?"#d9a441":"#d0d5dd"}`, borderRadius:6, cursor:"pointer", fontSize:14, color:"#1a1a1a", background: form[k]===v ? "rgba(217,164,65,0.08)" : "#fff", transition:"all 0.15s" }}>
+          <input type="radio" name={k} value={v} checked={form[k]===v} onChange={() => set(k,v)} style={{ accentColor:"#d9a441" }} />
+          {v}
+        </label>
+      ))}
+    </div>
+  );
+}
+
 const INIT: F = {
   company_name:"",sector:"",country:"",year_founded:"",legal_structure:"",stage:"",description:"",founder_gender:"",employees_fulltime:"",employees_parttime:"",pitch_deck_url:"",
   capital_amount:"",capital_currency:"USD",capital_type:"",use_of_funds:"",timeline:"",previously_raised:"",previous_raise_details:"",
@@ -51,69 +121,6 @@ export default function Apply() {
   const [pitchDeckFile, setPitchDeckFile] = useState<File | null>(null);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
-
-  /* ── shared styles ── */
-  const inp: React.CSSProperties = { width:"100%", padding:"10px 13px", fontSize:14, border:"1px solid #d0d5dd", borderRadius:6, outline:"none", color:"#1a1a1a", background:"#fff", transition:"border-color 0.15s", fontFamily:"inherit" };
-  const lbl: React.CSSProperties = { display:"block", fontSize:12, fontWeight:600, color:"#52606f", marginBottom:5, letterSpacing:"0.01em" };
-  const hint: React.CSSProperties = { fontSize:11, color:"#aeb9c7", marginTop:3 };
-  const g2: React.CSSProperties  = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 };
-
-  /* ── helpers ── */
-  function Inp({ k, label, ph, type="text", req, h }: { k:string; label:string; ph?:string; type?:string; req?:boolean; h?:string }) {
-    return (
-      <div>
-        <label style={lbl}>{label}{req && " *"}</label>
-        <input type={type} required={req} value={form[k]} placeholder={ph} onChange={e => set(k, e.target.value)} style={inp} />
-        {h && <p style={hint}>{h}</p>}
-      </div>
-    );
-  }
-  function Sel({ k, label, opts, h }: { k:string; label:string; opts:string[]; h?:string }) {
-    return (
-      <div>
-        <label style={lbl}>{label}</label>
-        <select value={form[k]} onChange={e => set(k, e.target.value)} style={{ ...inp, appearance:"none" }}>
-          <option value="">Select…</option>
-          {opts.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
-        {h && <p style={hint}>{h}</p>}
-      </div>
-    );
-  }
-  function Txt({ k, label, ph, rows=3, req, h }: { k:string; label:string; ph?:string; rows?:number; req?:boolean; h?:string }) {
-    return (
-      <div>
-        <label style={lbl}>{label}{req && " *"}</label>
-        <textarea required={req} rows={rows} value={form[k]} placeholder={ph} onChange={e => set(k, e.target.value)} style={{ ...inp, resize:"none", lineHeight:1.6 }} />
-        {h && <p style={hint}>{h}</p>}
-      </div>
-    );
-  }
-  function Num({ k, label, ph, prefix, h }: { k:string; label:string; ph?:string; prefix?:string; h?:string }) {
-    return (
-      <div>
-        <label style={lbl}>{label}</label>
-        <div style={{ display:"flex" }}>
-          {prefix && <span style={{ padding:"10px 11px", background:"#f5f5f5", border:"1px solid #d0d5dd", borderRight:"none", borderRadius:"6px 0 0 6px", fontSize:13, color:"#52606f", whiteSpace:"nowrap" }}>{prefix}</span>}
-          <input type="number" value={form[k]} placeholder={ph} onChange={e => set(k, e.target.value)}
-            style={{ ...inp, borderRadius: prefix ? "0 6px 6px 0" : 6 }} />
-        </div>
-        {h && <p style={hint}>{h}</p>}
-      </div>
-    );
-  }
-  function Radio({ k, opts }: { k:string; opts:string[] }) {
-    return (
-      <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-        {opts.map(v => (
-          <label key={v} style={{ display:"flex", alignItems:"center", gap:8, padding:"9px 14px", border:`1px solid ${form[k]===v?"#d9a441":"#d0d5dd"}`, borderRadius:6, cursor:"pointer", fontSize:14, color:"#1a1a1a", background: form[k]===v ? "rgba(217,164,65,0.08)" : "#fff", transition:"all 0.15s" }}>
-            <input type="radio" name={k} value={v} checked={form[k]===v} onChange={() => set(k,v)} style={{ accentColor:"#d9a441" }} />
-            {v}
-          </label>
-        ))}
-      </div>
-    );
-  }
 
   /* ── step panels ── */
   const steps = [
@@ -399,6 +406,7 @@ export default function Apply() {
 
   /* ── form ── */
   return (
+    <FormCtx.Provider value={{ form, set }}>
     <>
       {/* Page header */}
       <section style={{ background:"var(--navy-dark)", borderBottom:"1px solid var(--border)", padding:"40px 24px 30px" }}>
@@ -481,5 +489,6 @@ export default function Apply() {
         }
       `}</style>
     </>
+    </FormCtx.Provider>
   );
 }
