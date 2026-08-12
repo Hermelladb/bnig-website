@@ -5,7 +5,7 @@ const SERVICES = [
     number: "01",
     title: "Investment Readiness Assessment",
     tagline: "Know exactly where you stand.",
-    body: "Before any capital raise begins, we conduct a structured assessment of your business against the criteria institutional investors apply. We examine financial performance, governance, regulatory compliance, management depth, and market positioning — and give you a clear, unvarnished picture of what investors will find.",
+    body: "Before any capital raise begins, we conduct a structured assessment of your business against the criteria institutional investors apply.",
     deliverables: ["Structured readiness evaluation", "Gap analysis with prioritised actions", "Tailored roadmap to close the gaps"],
   },
   {
