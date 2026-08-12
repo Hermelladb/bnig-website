@@ -65,6 +65,21 @@ export default function Contact() {
                 <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Geography</p>
                 <p style={{ fontSize: 14, color: "var(--text-secondary)" }}>East Africa · West Africa · Horn of Africa</p>
               </div>
+
+              {/* Apply CTA */}
+              <div style={{ marginTop: 8, background: "var(--bg-section)", border: "1px solid var(--border)", borderRadius: 10, padding: "22px 20px" }}>
+                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent-light)", marginBottom: 8 }}>Raise Capital</p>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 14 }}>
+                  Ready to start your investor readiness process? Submit a full business assessment and we&apos;ll come back with a clear view of what you need.
+                </p>
+                <a href="/apply" style={{
+                  display: "inline-block", fontSize: 13, fontWeight: 700,
+                  background: "var(--accent)", color: "var(--navy)",
+                  padding: "10px 20px", letterSpacing: "0.03em",
+                }}>
+                  Start business assessment →
+                </a>
+              </div>
             </div>
           </div>
 
