@@ -82,8 +82,8 @@ export default function Footer() {
                   hello@bluenileinnovation.com
                 </a>
               </li>
-              <li style={{ marginBottom: 20, fontSize: 14, color: "var(--text-secondary)" }}>
-                East · West · Horn of Africa
+              <li style={{ marginBottom: 20, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>
+                North · West · Central · East · Horn · Southern Africa
               </li>
               <li>
                 <Link href="/contact" style={{

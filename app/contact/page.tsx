@@ -63,7 +63,7 @@ export default function Contact() {
               </div>
               <div>
                 <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Geography</p>
-                <p style={{ fontSize: 14, color: "var(--text-secondary)" }}>East Africa · West Africa · Horn of Africa</p>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>North · West · Central · East · Horn · Southern Africa</p>
               </div>
 
               {/* Apply CTA */}
