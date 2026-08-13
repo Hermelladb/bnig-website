@@ -326,7 +326,7 @@ export default function Home() {
             Ready to pursue institutional capital?
           </h2>
           <p style={{ color: "#d1d8e0", fontSize: 18, lineHeight: 1.75, margin: "0 auto 36px", maxWidth: 600 }}>
-            Tell us about your business and where you&apos;re trying to get to. We&apos;ll be direct about whether and how we can help.
+            Tell us about your business and where you&apos;re trying to get to.
           </p>
           <Link href="/contact" style={{
             display: "inline-flex", alignItems: "center",
