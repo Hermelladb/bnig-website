@@ -54,16 +54,16 @@ export default function Contact() {
 
             <div style={{ borderTop: "1px solid var(--border)", paddingTop: 32, display: "flex", flexDirection: "column", gap: 24 }}>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Email</p>
-                <a href="mailto:hello@bluenileinnovation.com" style={{ fontSize: 14, color: "var(--accent-light)" }}>hello@bluenileinnovation.com</a>
+                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>What happens next</p>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75 }}>Every enquiry is reviewed by our team. If your business is a fit, we will be in touch to arrange an introductory call.</p>
               </div>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Response time</p>
-                <p style={{ fontSize: 14, color: "var(--text-secondary)" }}>Within 2 business days</p>
+                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Who we work with</p>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75 }}>Founders and management teams serious about raising institutional capital across African markets.</p>
               </div>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Geography</p>
-                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>East · North · West · Central · Horn · Southern Africa</p>
+                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Confidentiality</p>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75 }}>Every conversation is treated with complete discretion. We never share your information without your explicit consent.</p>
               </div>
 
               {/* Apply CTA */}
