@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, Fragment } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 
@@ -19,24 +19,28 @@ const STEPS = [
   "Regulatory",
   "Management Team",
   "Market Position",
+  "ESG",
 ];
 
-const SECTORS   = ["Agriculture","Energy","Fintech","Healthcare","Infrastructure","Logistics","Manufacturing","Real Estate","Technology","Telecoms","Other"];
-const COUNTRIES = ["Angola","Botswana","Cameroon","Côte d'Ivoire","DRC","Egypt","Ethiopia","Ghana","Kenya","Libya","Mali","Morocco","Mozambique","Namibia","Nigeria","Rwanda","Senegal","Somalia","South Africa","Sudan","Tanzania","Tunisia","Uganda","Zambia","Zimbabwe","Other"];
-const CURRENCIES = ["USD","EUR","GBP","KES","NGN","ZAR","GHS","UGX","TZS","ETB"];
-const TIMELINES  = ["Less than 6 months","6–12 months","12–24 months","More than 24 months"];
-const REPORTING  = ["Monthly","Quarterly","Annually","Ad hoc / No formal reporting"];
-const HOW_HEARD  = ["Referral from colleague","LinkedIn","Google","Conference / Event","Industry publication","Other"];
+const SECTORS        = ["Agriculture","Energy","Fintech","Healthcare","Infrastructure","Logistics","Manufacturing","Real Estate","Technology","Telecoms","Other"];
+const COUNTRIES      = ["Angola","Botswana","Cameroon","Côte d'Ivoire","DRC","Egypt","Ethiopia","Ghana","Kenya","Libya","Mali","Morocco","Mozambique","Namibia","Nigeria","Rwanda","Senegal","Somalia","South Africa","Sudan","Tanzania","Tunisia","Uganda","Zambia","Zimbabwe","Other"];
+const CURRENCIES     = ["USD","EUR","GBP","KES","NGN","ZAR","GHS","UGX","TZS","ETB"];
+const TIMELINES      = ["Less than 6 months","6–12 months","12–24 months","More than 24 months"];
+const REPORTING      = ["Monthly","Quarterly","Annually","Ad hoc / No formal reporting"];
+const HOW_HEARD      = ["Referral from colleague","LinkedIn","Google","Conference / Event","Industry publication","Other"];
+const INVESTOR_TYPES = ["DFI","Private Equity","Venture Capital","Strategic Investor","Other"];
+const IMPACT_TYPES   = ["Job creation","Climate / clean energy","Financial inclusion","Other"];
 
 type F = Record<string, string>;
 
-/* ── module-level styles (static — defined once, not per render) ── */
+/* ── module-level styles ── */
 const inp: React.CSSProperties = { width:"100%", padding:"10px 13px", fontSize:14, border:"1px solid #d0d5dd", borderRadius:6, outline:"none", color:"#1a1a1a", background:"#fff", transition:"border-color 0.15s", fontFamily:"inherit" };
 const lbl: React.CSSProperties = { display:"block", fontSize:12, fontWeight:600, color:"#52606f", marginBottom:5, letterSpacing:"0.01em" };
 const hint: React.CSSProperties = { fontSize:11, color:"#aeb9c7", marginTop:3 };
 const g2: React.CSSProperties  = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 };
+const g3: React.CSSProperties  = { display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:16 };
 
-/* ── form context (avoids re-defining components inside render) ── */
+/* ── form context ── */
 const FormCtx = createContext<{ form: F; set: (k: string, v: string) => void }>({ form: {}, set: () => {} });
 
 function Inp({ k, label, ph, type="text", req, h }: { k:string; label:string; ph?:string; type?:string; req?:boolean; h?:string }) {
@@ -101,20 +105,52 @@ function Radio({ k, opts }: { k:string; opts:string[] }) {
 }
 
 const INIT: F = {
-  company_name:"",sector:"",country:"",year_founded:"",legal_structure:"",stage:"",description:"",founder_gender:"",employees_fulltime:"",employees_parttime:"",pitch_deck_url:"",
-  capital_amount:"",capital_currency:"USD",capital_type:"",use_of_funds:"",timeline:"",previously_raised:"",previous_raise_details:"",
-  revenue_y1:"",revenue_y2:"",revenue_y3:"",gross_margin_pct:"",fixed_opex_annual:"",current_debt:"",debt_interest_rate:"",cash_on_hand:"",has_audited_accounts:"",audited_years:"",
-  growth_y1:"",growth_y2:"",growth_y3:"",growth_y4:"",growth_y5:"",annual_capex:"",tax_rate:"",receivables_days:"",payables_days:"",inventory_days:"",
-  has_board:"",board_size:"",has_independent_directors:"",has_shareholders_agreement:"",has_external_audit:"",auditor_name:"",management_reporting_frequency:"",
-  registration_country:"",registration_number:"",sector_licenses:"",compliance_issues:"",compliance_details:"",multi_country:"",countries_operating:"",
-  ceo_name:"",ceo_background:"",has_cfo:"",cfo_name:"",cfo_background:"",other_key_executives:"",key_person_risk:"",
-  target_market:"",market_size_estimate:"",main_competitors:"",competitive_advantage:"",current_customers:"",revenue_model:"",
+  /* Contact */
   contact_name:"",contact_role:"",contact_email:"",contact_phone:"",best_time:"",how_did_you_hear:"",
+  /* Business Overview */
+  company_name:"",sector:"",country:"",year_founded:"",legal_structure:"",stage:"",description:"",
+  website:"",company_type:"",holdco_country:"",opco_country:"",
+  founder_gender:"",employees_fulltime:"",employees_parttime:"",pitch_deck_url:"",
+  /* Capital Raise */
+  capital_amount:"",capital_currency:"USD",capital_type:"",preferred_investor:"",
+  use_capex_pct:"",use_working_capital_pct:"",use_refinance_pct:"",use_other_pct:"",
+  use_of_funds:"",last_valuation:"",timeline:"",previously_raised:"",previous_raise_details:"",
+  /* Financial Performance */
+  revenue_y1:"",revenue_y2:"",revenue_y3:"",
+  ebitda_y1:"",ebitda_y2:"",ebitda_y3:"",
+  gross_margin_pct:"",fixed_opex_annual:"",
+  monthly_burn:"",cash_runway:"",
+  largest_customer_pct:"",hard_currency_pct:"",
+  current_debt:"",debt_interest_rate:"",cash_on_hand:"",has_audited_accounts:"",audited_years:"",
+  /* Financial Projections */
+  growth_y1:"",growth_y2:"",growth_y3:"",growth_y4:"",growth_y5:"",
+  proj_revenue_y1:"",proj_revenue_y2:"",proj_revenue_y3:"",
+  proj_ebitda_y1:"",proj_ebitda_y2:"",proj_ebitda_y3:"",
+  has_financial_model:"",
+  annual_capex:"",tax_rate:"",receivables_days:"",payables_days:"",inventory_days:"",
+  /* Governance */
+  has_board:"",board_size:"",has_independent_directors:"",has_shareholders_agreement:"",
+  has_external_audit:"",auditor_name:"",management_reporting_frequency:"",
+  cap_table_founder_pct:"",cap_table_esop_pct:"",cap_table_investors_pct:"",
+  beneficial_owners:"",has_peps:"",
+  /* Regulatory */
+  registration_country:"",registration_number:"",sector_licenses:"",
+  compliance_issues:"",compliance_details:"",multi_country:"",countries_operating:"",
+  tax_filings_current:"",has_litigation:"",litigation_details:"",
+  /* Management */
+  ceo_name:"",ceo_background:"",has_cfo:"",cfo_name:"",cfo_background:"",
+  other_key_executives:"",key_person_risk:"",day_to_day_ops:"",
+  /* Market */
+  target_market:"",market_size_estimate:"",sam_estimate:"",som_estimate:"",
+  main_competitors:"",competitive_advantage:"",current_customers:"",
+  revenue_model:"",contracted_revenue_pct:"",
+  /* ESG */
+  jobs_24months:"",women_senior_mgmt_pct:"",main_impact:"",
 };
 
 export default function Apply() {
-  const [step, setStep]         = useState(0);
-  const [form, setForm]         = useState<F>(INIT);
+  const [step, setStep]             = useState(0);
+  const [form, setForm]             = useState<F>(INIT);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted]   = useState(false);
   const [error, setError]           = useState("");
@@ -126,7 +162,7 @@ export default function Apply() {
   const steps = [
 
     /* 1 — Contact Details */
-    <div key={1} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    <div key="contact" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div style={g2}>
         <Inp k="contact_name" label="Your full name" ph="Jane Mwangi" req />
         <Inp k="contact_role" label="Your title / role" ph="CEO & Founder" req />
@@ -145,8 +181,11 @@ export default function Apply() {
     </div>,
 
     /* 2 — Business Overview */
-    <div key={1} style={{ display:"flex", flexDirection:"column", gap:18 }}>
-      <Inp k="company_name" label="Company name" ph="Sunrise Energy Ltd" req />
+    <div key="overview" style={{ display:"flex", flexDirection:"column", gap:18 }}>
+      <div style={g2}>
+        <Inp k="company_name" label="Company name" ph="Sunrise Energy Ltd" req />
+        <Inp k="website" label="Website" ph="https://sunriseenergy.co.ke" />
+      </div>
       <div style={g2}>
         <Sel k="sector" label="Sector" opts={SECTORS} />
         <Sel k="country" label="Country of primary operations" opts={COUNTRIES} />
@@ -155,6 +194,16 @@ export default function Apply() {
         <Inp k="year_founded" label="Year founded" ph="2019" type="number" />
         <Sel k="legal_structure" label="Legal structure" opts={["Limited Company","Partnership","Sole Trader","NGO / Non-profit","Joint Venture","Other"]} />
       </div>
+      <div>
+        <label style={lbl}>HoldCo or operating company?</label>
+        <Radio k="company_type" opts={["Operating company only","HoldCo + operating company","Other structure"]} />
+      </div>
+      {form.company_type === "HoldCo + operating company" && (
+        <div style={g2}>
+          <Sel k="holdco_country" label="HoldCo country" opts={COUNTRIES} />
+          <Sel k="opco_country" label="Operating company country" opts={COUNTRIES} />
+        </div>
+      )}
       <Sel k="stage" label="Business stage" opts={["Early-stage / Startup","Growth","Expansion / Scale-up","Pre-IPO","Established"]} />
       <Txt k="description" label="Explain your startup" ph="Elevator pitch" rows={4} req />
       <div>
@@ -166,30 +215,21 @@ export default function Apply() {
         <Num k="employees_parttime" label="# of Part-time / contract employees" ph="5" h="Part-time, casual, or contract workers" />
       </div>
       <div>
-        <label style={lbl}>Pitch deck <span style={{ fontWeight: 400, color: "#aeb9c7" }}>(optional)</span></label>
-        <label style={{
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          gap: 8, padding: "22px 16px", cursor: "pointer",
-          border: "1.5px dashed #d0d5dd", borderRadius: 6, background: "#fafafa",
-          transition: "border-color 0.15s",
-        }}>
-          <input type="file" accept=".pdf,.ppt,.pptx" style={{ display: "none" }}
-            onChange={e => setPitchDeckFile(e.target.files?.[0] || null)} />
-          <span style={{ fontSize: 22, color: "#aeb9c7" }}>↑</span>
+        <label style={lbl}>Pitch deck <span style={{ fontWeight:400, color:"#aeb9c7" }}>(optional)</span></label>
+        <label style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:8, padding:"22px 16px", cursor:"pointer", border:"1.5px dashed #d0d5dd", borderRadius:6, background:"#fafafa" }}>
+          <input type="file" accept=".pdf,.ppt,.pptx" style={{ display:"none" }} onChange={e => setPitchDeckFile(e.target.files?.[0] || null)} />
+          <span style={{ fontSize:22, color:"#aeb9c7" }}>↑</span>
           {pitchDeckFile
-            ? <span style={{ fontSize: 13, color: "#1a1a1a", fontWeight: 600 }}>{pitchDeckFile.name}</span>
-            : <>
-                <span style={{ fontSize: 13, color: "#52606f" }}>Drop your deck here, or <span style={{ color: "#d9a441" }}>browse</span></span>
-                <span style={{ fontSize: 11, color: "#aeb9c7" }}>PDF or PowerPoint · max 20 MB</span>
-              </>
+            ? <span style={{ fontSize:13, color:"#1a1a1a", fontWeight:600 }}>{pitchDeckFile.name}</span>
+            : <><span style={{ fontSize:13, color:"#52606f" }}>Drop your deck here, or <span style={{ color:"#d9a441" }}>browse</span></span><span style={{ fontSize:11, color:"#aeb9c7" }}>PDF or PowerPoint · max 20 MB</span></>
           }
         </label>
         <p style={hint}>Uploaded files are stored securely and treated with strict confidentiality.</p>
       </div>
     </div>,
 
-    /* 2 — Capital Raise */
-    <div key={2} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 3 — Capital Raise */
+    <div key="capital" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div>
         <label style={lbl}>Amount seeking to raise *</label>
         <div style={{ display:"flex", gap:10 }}>
@@ -203,7 +243,21 @@ export default function Apply() {
         <label style={lbl}>Type of capital</label>
         <Radio k="capital_type" opts={["Equity","Debt","Blended Finance (Equity + Debt)"]} />
       </div>
-      <Txt k="use_of_funds" label="Use of funds" ph="Describe what the capital will fund — expansion, equipment, working capital, acquisition, etc." rows={3} req />
+      <div>
+        <label style={lbl}>Preferred investor type</label>
+        <Radio k="preferred_investor" opts={INVESTOR_TYPES} />
+      </div>
+      <div>
+        <label style={lbl}>Use of funds — % split <span style={{ fontWeight:400, color:"#aeb9c7" }}>(should total 100%)</span></label>
+        <div style={g2}>
+          <Num k="use_capex_pct" label="CapEx" prefix="%" ph="40" />
+          <Num k="use_working_capital_pct" label="Working capital" prefix="%" ph="30" />
+          <Num k="use_refinance_pct" label="Refinancing" prefix="%" ph="20" />
+          <Num k="use_other_pct" label="Other" prefix="%" ph="10" />
+        </div>
+      </div>
+      <Txt k="use_of_funds" label="Use of funds — narrative" ph="Describe what the capital will fund in more detail." rows={3} req />
+      <Num k="last_valuation" label="Last valuation (if any)" prefix={form.capital_currency||"USD"} ph="10 000 000" h="Leave blank if no prior valuation has been established" />
       <Sel k="timeline" label="Target timeline to close" opts={TIMELINES} />
       <div>
         <label style={lbl}>Have you raised capital before?</label>
@@ -214,17 +268,36 @@ export default function Apply() {
       )}
     </div>,
 
-    /* 3 — Financial Performance */
-    <div key={3} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 4 — Financial Performance */
+    <div key="financials" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <p style={{ fontSize:13, color:"#8a9ab5", margin:0 }}>Figures in {form.capital_currency||"USD"}. Approximate figures are fine — we will verify with you.</p>
-      <Num k="revenue_y1" label="Revenue — most recent completed year" ph="2 400 000" />
-      <div style={g2}>
-        <Num k="revenue_y2" label="Revenue — year before" />
-        <Num k="revenue_y3" label="Revenue — two years ago" />
+      <div>
+        <label style={{ ...lbl, marginBottom:10 }}>Revenue — last 3 completed years</label>
+        <div style={g3}>
+          <Num k="revenue_y1" label="Most recent year" ph="2 400 000" />
+          <Num k="revenue_y2" label="Year before" />
+          <Num k="revenue_y3" label="Two years ago" />
+        </div>
+      </div>
+      <div>
+        <label style={{ ...lbl, marginBottom:10 }}>EBITDA — last 3 completed years</label>
+        <div style={g3}>
+          <Num k="ebitda_y1" label="Most recent year" ph="480 000" />
+          <Num k="ebitda_y2" label="Year before" />
+          <Num k="ebitda_y3" label="Two years ago" />
+        </div>
       </div>
       <div style={g2}>
-        <Num k="gross_margin_pct" label="Gross profit margin" prefix="%" ph="45" h="Revenue minus cost of goods/services, as % of revenue" />
-        <Num k="fixed_opex_annual" label="Annual fixed operating costs" ph="800 000" h="Salaries, rent, admin — costs not tied to revenue volume" />
+        <Num k="gross_margin_pct" label="Gross profit margin" prefix="%" ph="45" h="Revenue minus COGS, as % of revenue" />
+        <Num k="fixed_opex_annual" label="Annual fixed operating costs" ph="800 000" h="Salaries, rent, admin" />
+      </div>
+      <div style={g2}>
+        <Num k="monthly_burn" label="Monthly cash burn" ph="120 000" h="Net cash outflow per month" />
+        <Num k="cash_runway" label="Cash runway" prefix="months" ph="8" h="At current burn rate" />
+      </div>
+      <div style={g2}>
+        <Num k="largest_customer_pct" label="% revenue from largest customer" prefix="%" ph="35" h="Concentration risk indicator" />
+        <Num k="hard_currency_pct" label="% revenue in hard currency" prefix="%" ph="60" h="USD / EUR / GBP — balance is local currency" />
       </div>
       <div style={g2}>
         <Num k="current_debt" label="Existing debt outstanding" ph="0" />
@@ -240,37 +313,55 @@ export default function Apply() {
       )}
     </div>,
 
-    /* 4 — Financial Projections */
-    <div key={4} style={{ display:"flex", flexDirection:"column", gap:18 }}>
-      <p style={{ fontSize:13, color:"#8a9ab5", margin:0 }}>Your best estimates over a 5-year horizon. We will review and refine these with you — precision is less important than direction.</p>
+    /* 5 — Financial Projections */
+    <div key="projections" style={{ display:"flex", flexDirection:"column", gap:18 }}>
+      <p style={{ fontSize:13, color:"#8a9ab5", margin:0 }}>Your best estimates. We will review and refine these with you — direction matters more than precision.</p>
       <div>
-        <label style={{ ...lbl, marginBottom:10 }}>Projected annual revenue growth rate (%)</label>
+        <label style={{ ...lbl, marginBottom:10 }}>Projected revenue and EBITDA — Years 1–3 ({form.capital_currency||"USD"})</label>
+        <div style={{ display:"grid", gridTemplateColumns:"auto 1fr 1fr", gap:12, alignItems:"end" }}>
+          <div />
+          <label style={{ ...lbl, textAlign:"center", marginBottom:4 }}>Revenue</label>
+          <label style={{ ...lbl, textAlign:"center", marginBottom:4 }}>EBITDA</label>
+          {[1,2,3].map(y => (
+            <Fragment key={y}>
+              <label style={{ ...lbl, alignSelf:"center", whiteSpace:"nowrap" }}>Year {y}</label>
+              <input type="number" value={form[`proj_revenue_y${y}`]||""} placeholder="e.g. 3 000 000" onChange={e => set(`proj_revenue_y${y}`,e.target.value)} style={inp} />
+              <input type="number" value={form[`proj_ebitda_y${y}`]||""} placeholder="e.g. 600 000" onChange={e => set(`proj_ebitda_y${y}`,e.target.value)} style={inp} />
+            </Fragment>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label style={{ ...lbl, marginBottom:10 }}>Projected annual revenue growth rate (%) — Years 1–5</label>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:12 }}>
           {[1,2,3,4,5].map(y => (
             <div key={y}>
               <label style={{ ...lbl, textAlign:"center" }}>Year {y}</label>
               <div style={{ display:"flex" }}>
-                <input type="number" value={form[`growth_y${y}`]} placeholder="25" onChange={e => set(`growth_y${y}`,e.target.value)}
-                  style={{ ...inp, borderRadius:"6px 0 0 6px", textAlign:"center" }} />
+                <input type="number" value={form[`growth_y${y}`]||""} placeholder="25" onChange={e => set(`growth_y${y}`,e.target.value)} style={{ ...inp, borderRadius:"6px 0 0 6px", textAlign:"center" }} />
                 <span style={{ padding:"10px 8px", background:"#f5f5f5", border:"1px solid #d0d5dd", borderLeft:"none", borderRadius:"0 6px 6px 0", fontSize:12, color:"#52606f" }}>%</span>
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div style={g2}>
-        <Num k="annual_capex" label="Expected annual capital expenditure" ph="500 000" h="Equipment, property, infrastructure — leave 0 if none" />
-        <Num k="tax_rate" label="Corporate tax rate" prefix="%" ph="30" h="In your primary operating jurisdiction" />
+      <div>
+        <label style={lbl}>Do you have a financial model?</label>
+        <Radio k="has_financial_model" opts={["Yes","Internal only","No"]} />
       </div>
       <div style={g2}>
-        <Num k="receivables_days" label="Customer payment terms" ph="30" h="Average days between invoice and payment received" />
-        <Num k="payables_days" label="Supplier payment terms" ph="30" h="Average days you take to pay suppliers" />
+        <Num k="annual_capex" label="Expected annual CapEx" ph="500 000" h="Equipment, property, infrastructure" />
+        <Num k="tax_rate" label="Corporate tax rate" prefix="%" ph="30" />
       </div>
-      <Num k="inventory_days" label="Inventory holding period (days)" ph="0" h="Leave 0 if not applicable to your business" />
+      <div style={g2}>
+        <Num k="receivables_days" label="Customer payment terms (days)" ph="30" />
+        <Num k="payables_days" label="Supplier payment terms (days)" ph="30" />
+      </div>
+      <Num k="inventory_days" label="Inventory holding period (days)" ph="0" h="Leave 0 if not applicable" />
     </div>,
 
-    /* 5 — Governance */
-    <div key={5} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 6 — Governance */
+    <div key="governance" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div>
         <label style={lbl}>Do you have a formal board of directors?</label>
         <Radio k="has_board" opts={["Yes","Advisory board only","No"]} />
@@ -287,6 +378,19 @@ export default function Apply() {
         <Radio k="has_shareholders_agreement" opts={["Yes","In progress","No"]} />
       </div>
       <div>
+        <label style={lbl}>Cap table breakdown <span style={{ fontWeight:400, color:"#aeb9c7" }}>(% — should total 100%)</span></label>
+        <div style={g3}>
+          <Num k="cap_table_founder_pct" label="Founders" prefix="%" ph="65" />
+          <Num k="cap_table_esop_pct" label="ESOP / employee pool" prefix="%" ph="10" />
+          <Num k="cap_table_investors_pct" label="Existing investors" prefix="%" ph="25" />
+        </div>
+      </div>
+      <Txt k="beneficial_owners" label="Beneficial owners ≥ 10%" ph="Name, nationality, and % for each beneficial owner holding 10% or more." rows={3} h="Required for AML / KYC compliance by institutional investors" />
+      <div>
+        <label style={lbl}>Are any shareholders, directors, or management Politically Exposed Persons (PEPs)?</label>
+        <Radio k="has_peps" opts={["Yes","No"]} />
+      </div>
+      <div>
         <label style={lbl}>External audit completed?</label>
         <Radio k="has_external_audit" opts={["Yes","No"]} />
       </div>
@@ -296,19 +400,30 @@ export default function Apply() {
       <Sel k="management_reporting_frequency" label="How often are management accounts prepared?" opts={REPORTING} />
     </div>,
 
-    /* 6 — Regulatory */
-    <div key={6} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 7 — Regulatory */
+    <div key="regulatory" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div style={g2}>
         <Inp k="registration_country" label="Country of company registration" ph="Kenya" />
         <Inp k="registration_number" label="Company registration number" ph="CPR/2019/123456" />
       </div>
       <Txt k="sector_licenses" label="Sector-specific licences held" ph="List any operating licences, regulatory approvals, or sector permits." rows={3} h="e.g. CBK licence, EPRA licence, NCA registration, NEMA permit" />
       <div>
+        <label style={lbl}>Tax filings current? (VAT, PAYE, CIT) and tax clearance in place?</label>
+        <Radio k="tax_filings_current" opts={["Yes","Partial","No"]} />
+      </div>
+      <div>
         <label style={lbl}>Any regulatory investigations, penalties, or compliance issues in the last 3 years?</label>
         <Radio k="compliance_issues" opts={["Yes","No"]} />
       </div>
       {form.compliance_issues === "Yes" && (
         <Txt k="compliance_details" label="Brief description" ph="Describe the issue and current status." rows={3} />
+      )}
+      <div>
+        <label style={lbl}>Any material litigation?</label>
+        <Radio k="has_litigation" opts={["Yes","No"]} />
+      </div>
+      {form.has_litigation === "Yes" && (
+        <Txt k="litigation_details" label="Litigation details" ph="Describe the claim, counterparty, and current status." rows={3} />
       )}
       <div>
         <label style={lbl}>Do you operate across multiple countries?</label>
@@ -319,8 +434,8 @@ export default function Apply() {
       )}
     </div>,
 
-    /* 7 — Management Team */
-    <div key={7} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 8 — Management Team */
+    <div key="management" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <Inp k="ceo_name" label="CEO / Founder name" ph="Jane Mwangi" />
       <Txt k="ceo_background" label="CEO / Founder background and track record" ph="Professional background — sectors, previous roles, notable achievements, years of experience." rows={4} />
       <div>
@@ -331,20 +446,39 @@ export default function Apply() {
         <Inp k="cfo_name" label="CFO / Finance lead name" ph="David Osei" />
         <Txt k="cfo_background" label="CFO background" ph="Professional background." rows={3} />
       </>}
+      <Txt k="day_to_day_ops" label="Who runs operations day-to-day below the founders?" ph="Names, roles, and brief description of the team that manages daily operations." rows={3} />
       <Txt k="other_key_executives" label="Other key executives" ph="Name, role, and brief background for other senior team members." rows={3} />
       <Txt k="key_person_risk" label="Key person dependencies" ph="Are there individuals whose departure would significantly affect the business? How is this managed?" rows={3} h="Investors will assess this — be direct." />
     </div>,
 
-    /* 8 — Market Position */
-    <div key={8} style={{ display:"flex", flexDirection:"column", gap:18 }}>
+    /* 9 — Market Position */
+    <div key="market" style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <Txt k="target_market" label="Target market" ph="Who are your customers? Geography, size, sector, type." rows={3} req />
-      <Inp k="market_size_estimate" label="Estimated total addressable market (TAM)" ph="e.g. USD 2.5 billion" h="Cite your source if you have one" />
+      <div style={g3}>
+        <Inp k="market_size_estimate" label="TAM estimate" ph="USD 2.5 billion" h="Total addressable market" />
+        <Inp k="sam_estimate" label="SAM estimate" ph="USD 400 million" h="Serviceable addressable market" />
+        <Inp k="som_estimate" label="SOM estimate" ph="USD 40 million" h="Serviceable obtainable market" />
+      </div>
+      <Num k="contracted_revenue_pct" label="% of next-year revenue already contracted or committed" prefix="%" ph="35" h="Signed contracts, LOIs, or recurring agreements" />
       <Txt k="main_competitors" label="Main competitors" ph="Primary direct and indirect competitors." rows={3} />
       <Txt k="competitive_advantage" label="Competitive advantage" ph="What makes your business difficult to replicate? Why will customers choose you over alternatives?" rows={4} req />
       <Inp k="current_customers" label="Current number of paying customers / clients" ph="45" type="number" />
       <Txt k="revenue_model" label="Revenue model" ph="How do you generate revenue? e.g. subscription, transaction fee, long-term contracts, one-off sales." rows={3} />
     </div>,
 
+    /* 10 — ESG */
+    <div key="esg" style={{ display:"flex", flexDirection:"column", gap:18 }}>
+      <p style={{ fontSize:13, color:"#8a9ab5", margin:0 }}>ESG data is increasingly required by DFIs and impact-oriented investors. Provide your best estimates.</p>
+      <div style={g2}>
+        <Num k="employees_fulltime" label="Direct jobs today (full-time)" ph="45" h="Current permanent headcount" />
+        <Num k="jobs_24months" label="Projected direct jobs in 24 months" ph="120" h="Expected permanent headcount after raise" />
+      </div>
+      <Num k="women_senior_mgmt_pct" label="Women in senior management" prefix="%" ph="40" h="% of C-suite, VP, and director-level roles held by women" />
+      <div>
+        <label style={lbl}>Primary development impact</label>
+        <Radio k="main_impact" opts={IMPACT_TYPES} />
+      </div>
+    </div>,
   ];
 
   /* ── submit ── */
@@ -370,15 +504,16 @@ export default function Apply() {
         stage: form.stage||null, capital_amount: form.capital_amount ? parseFloat(form.capital_amount) : null,
         capital_currency: form.capital_currency, capital_type: form.capital_type||null,
         contact_name: form.contact_name, contact_email: form.contact_email,
-        business_overview: { company_name:form.company_name, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description, founder_gender:form.founder_gender, employees_fulltime:form.employees_fulltime, employees_parttime:form.employees_parttime, pitch_deck_url:pitchDeckUrl },
-        capital_raise: { amount:form.capital_amount, currency:form.capital_currency, type:form.capital_type, use_of_funds:form.use_of_funds, timeline:form.timeline, previously_raised:form.previously_raised, previous_raise_details:form.previous_raise_details },
-        financials: { revenue_y1:form.revenue_y1, revenue_y2:form.revenue_y2, revenue_y3:form.revenue_y3, gross_margin_pct:form.gross_margin_pct, fixed_opex_annual:form.fixed_opex_annual, current_debt:form.current_debt, debt_interest_rate:form.debt_interest_rate, cash_on_hand:form.cash_on_hand, has_audited_accounts:form.has_audited_accounts, audited_years:form.audited_years },
-        projections: { growth_y1:form.growth_y1, growth_y2:form.growth_y2, growth_y3:form.growth_y3, growth_y4:form.growth_y4, growth_y5:form.growth_y5, annual_capex:form.annual_capex, tax_rate:form.tax_rate, receivables_days:form.receivables_days, payables_days:form.payables_days, inventory_days:form.inventory_days },
-        governance: { has_board:form.has_board, board_size:form.board_size, has_independent_directors:form.has_independent_directors, has_shareholders_agreement:form.has_shareholders_agreement, has_external_audit:form.has_external_audit, auditor_name:form.auditor_name, management_reporting_frequency:form.management_reporting_frequency },
-        regulatory: { registration_country:form.registration_country, registration_number:form.registration_number, sector_licenses:form.sector_licenses, compliance_issues:form.compliance_issues, compliance_details:form.compliance_details, multi_country:form.multi_country, countries_operating:form.countries_operating },
-        management: { ceo_name:form.ceo_name, ceo_background:form.ceo_background, has_cfo:form.has_cfo, cfo_name:form.cfo_name, cfo_background:form.cfo_background, other_key_executives:form.other_key_executives, key_person_risk:form.key_person_risk },
-        market: { target_market:form.target_market, market_size_estimate:form.market_size_estimate, main_competitors:form.main_competitors, competitive_advantage:form.competitive_advantage, current_customers:form.current_customers, revenue_model:form.revenue_model },
+        business_overview: { company_name:form.company_name, website:form.website, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description, company_type:form.company_type, holdco_country:form.holdco_country, opco_country:form.opco_country, founder_gender:form.founder_gender, employees_fulltime:form.employees_fulltime, employees_parttime:form.employees_parttime, pitch_deck_url:pitchDeckUrl },
+        capital_raise: { amount:form.capital_amount, currency:form.capital_currency, type:form.capital_type, preferred_investor:form.preferred_investor, use_capex_pct:form.use_capex_pct, use_working_capital_pct:form.use_working_capital_pct, use_refinance_pct:form.use_refinance_pct, use_other_pct:form.use_other_pct, use_of_funds:form.use_of_funds, last_valuation:form.last_valuation, timeline:form.timeline, previously_raised:form.previously_raised, previous_raise_details:form.previous_raise_details },
+        financials: { revenue_y1:form.revenue_y1, revenue_y2:form.revenue_y2, revenue_y3:form.revenue_y3, ebitda_y1:form.ebitda_y1, ebitda_y2:form.ebitda_y2, ebitda_y3:form.ebitda_y3, gross_margin_pct:form.gross_margin_pct, fixed_opex_annual:form.fixed_opex_annual, monthly_burn:form.monthly_burn, cash_runway:form.cash_runway, largest_customer_pct:form.largest_customer_pct, hard_currency_pct:form.hard_currency_pct, current_debt:form.current_debt, debt_interest_rate:form.debt_interest_rate, cash_on_hand:form.cash_on_hand, has_audited_accounts:form.has_audited_accounts, audited_years:form.audited_years },
+        projections: { proj_revenue_y1:form.proj_revenue_y1, proj_revenue_y2:form.proj_revenue_y2, proj_revenue_y3:form.proj_revenue_y3, proj_ebitda_y1:form.proj_ebitda_y1, proj_ebitda_y2:form.proj_ebitda_y2, proj_ebitda_y3:form.proj_ebitda_y3, growth_y1:form.growth_y1, growth_y2:form.growth_y2, growth_y3:form.growth_y3, growth_y4:form.growth_y4, growth_y5:form.growth_y5, has_financial_model:form.has_financial_model, annual_capex:form.annual_capex, tax_rate:form.tax_rate, receivables_days:form.receivables_days, payables_days:form.payables_days, inventory_days:form.inventory_days },
+        governance: { has_board:form.has_board, board_size:form.board_size, has_independent_directors:form.has_independent_directors, has_shareholders_agreement:form.has_shareholders_agreement, cap_table_founder_pct:form.cap_table_founder_pct, cap_table_esop_pct:form.cap_table_esop_pct, cap_table_investors_pct:form.cap_table_investors_pct, beneficial_owners:form.beneficial_owners, has_peps:form.has_peps, has_external_audit:form.has_external_audit, auditor_name:form.auditor_name, management_reporting_frequency:form.management_reporting_frequency },
+        regulatory: { registration_country:form.registration_country, registration_number:form.registration_number, sector_licenses:form.sector_licenses, tax_filings_current:form.tax_filings_current, compliance_issues:form.compliance_issues, compliance_details:form.compliance_details, has_litigation:form.has_litigation, litigation_details:form.litigation_details, multi_country:form.multi_country, countries_operating:form.countries_operating },
+        management: { ceo_name:form.ceo_name, ceo_background:form.ceo_background, has_cfo:form.has_cfo, cfo_name:form.cfo_name, cfo_background:form.cfo_background, day_to_day_ops:form.day_to_day_ops, other_key_executives:form.other_key_executives, key_person_risk:form.key_person_risk },
+        market: { target_market:form.target_market, market_size_estimate:form.market_size_estimate, sam_estimate:form.sam_estimate, som_estimate:form.som_estimate, contracted_revenue_pct:form.contracted_revenue_pct, main_competitors:form.main_competitors, competitive_advantage:form.competitive_advantage, current_customers:form.current_customers, revenue_model:form.revenue_model },
         contact: { name:form.contact_name, role:form.contact_role, email:form.contact_email, phone:form.contact_phone, best_time:form.best_time, how_did_you_hear:form.how_did_you_hear },
+        esg: { jobs_today:form.employees_fulltime, jobs_24months:form.jobs_24months, women_senior_mgmt_pct:form.women_senior_mgmt_pct, main_impact:form.main_impact },
       });
       if (err) throw err;
       setSubmitted(true);
@@ -408,7 +543,6 @@ export default function Apply() {
   return (
     <FormCtx.Provider value={{ form, set }}>
     <>
-      {/* Page header */}
       <section style={{ background:"var(--navy-dark)", borderBottom:"1px solid var(--border)", padding:"40px 24px 30px" }}>
         <div style={{ width:"min(92%, 860px)", margin:"0 auto" }}>
           <p style={{ color:"var(--accent)", fontSize:12, fontWeight:600, letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>Business Assessment</p>
@@ -419,7 +553,6 @@ export default function Apply() {
         </div>
       </section>
 
-      {/* Step tabs */}
       <div style={{ background:"var(--navy)", borderBottom:"1px solid var(--border)", overflowX:"auto" }}>
         <div style={{ width:"min(92%, 860px)", margin:"0 auto", display:"flex", minWidth:"max-content" }}>
           {STEPS.map((s, i) => (
@@ -436,11 +569,9 @@ export default function Apply() {
         </div>
       </div>
 
-      {/* Form card */}
       <section style={{ background:"var(--navy)", padding:"44px 24px 80px", minHeight:"calc(100vh - 200px)" }}>
         <div style={{ width:"min(92%, 860px)", margin:"0 auto" }}>
           <div style={{ background:"#fff", borderRadius:12, padding:"36px 40px", boxShadow:"0 2px 16px rgba(0,0,0,0.10)" }}>
-
             <div style={{ marginBottom:28, paddingBottom:20, borderBottom:"1px solid #f0f0f0" }}>
               <p style={{ fontSize:11, color:"#aeb9c7", marginBottom:5 }}>Step {step+1} of {STEPS.length}</p>
               <h2 style={{ fontFamily:"var(--serif)", fontSize:24, fontWeight:500, color:"#1a1a1a", margin:0 }}>{STEPS[step]}</h2>
@@ -451,27 +582,12 @@ export default function Apply() {
             {error && <p style={{ fontSize:13, color:"#ef4444", marginTop:16 }}>{error}</p>}
 
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:32, paddingTop:24, borderTop:"1px solid #f0f0f0" }}>
-              <button onClick={() => setStep(s => s-1)} disabled={step===0} style={{
-                padding:"11px 24px", fontSize:14, fontWeight:600, background:"transparent",
-                color: step===0 ? "#ccc" : "#52606f", border:`1px solid ${step===0?"#e8e8e8":"#d0d5dd"}`,
-                borderRadius:6, cursor: step===0 ? "default" : "pointer", fontFamily:"inherit",
-              }}>← Back</button>
-
+              <button onClick={() => setStep(s => s-1)} disabled={step===0} style={{ padding:"11px 24px", fontSize:14, fontWeight:600, background:"transparent", color: step===0 ? "#ccc" : "#52606f", border:`1px solid ${step===0?"#e8e8e8":"#d0d5dd"}`, borderRadius:6, cursor: step===0 ? "default" : "pointer", fontFamily:"inherit" }}>← Back</button>
               <span style={{ fontSize:12, color:"#aeb9c7" }}>{step+1} / {STEPS.length}</span>
-
               {step < STEPS.length-1 ? (
-                <button onClick={() => setStep(s => s+1)} style={{
-                  padding:"11px 26px", fontSize:14, fontWeight:700,
-                  background:"var(--accent)", color:"var(--navy)",
-                  border:"1px solid var(--accent)", borderRadius:6, cursor:"pointer", fontFamily:"inherit",
-                }}>Next →</button>
+                <button onClick={() => setStep(s => s+1)} style={{ padding:"11px 26px", fontSize:14, fontWeight:700, background:"var(--accent)", color:"var(--navy)", border:"1px solid var(--accent)", borderRadius:6, cursor:"pointer", fontFamily:"inherit" }}>Next →</button>
               ) : (
-                <button onClick={handleSubmit} disabled={submitting} style={{
-                  padding:"11px 28px", fontSize:14, fontWeight:700,
-                  background: submitting ? "#ccc" : "var(--accent)",
-                  color:"var(--navy)", border:"none", borderRadius:6,
-                  cursor: submitting ? "default" : "pointer", fontFamily:"inherit",
-                }}>{submitting ? "Submitting…" : "Submit Assessment"}</button>
+                <button onClick={handleSubmit} disabled={submitting} style={{ padding:"11px 28px", fontSize:14, fontWeight:700, background: submitting ? "#ccc" : "var(--accent)", color:"var(--navy)", border:"none", borderRadius:6, cursor: submitting ? "default" : "pointer", fontFamily:"inherit" }}>{submitting ? "Submitting…" : "Submit Assessment"}</button>
               )}
             </div>
           </div>
@@ -484,9 +600,7 @@ export default function Apply() {
 
       <style>{`
         input:focus, select:focus, textarea:focus { border-color: #d9a441 !important; box-shadow: 0 0 0 3px rgba(217,164,65,0.10); }
-        @media (max-width: 600px) {
-          .step-grid { grid-template-columns: 1fr !important; }
-        }
+        @media (max-width: 600px) { .step-grid { grid-template-columns: 1fr !important; } }
       `}</style>
     </>
     </FormCtx.Provider>
