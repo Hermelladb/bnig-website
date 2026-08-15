@@ -488,15 +488,17 @@ export default function Apply() {
     }
     setSubmitting(true); setError("");
     try {
-      let pitchDeckUrl = "";
+      let pitchDeckPath = "";
       if (pitchDeckFile) {
         const ext = pitchDeckFile.name.split(".").pop();
-        const filename = `${Date.now()}-${form.company_name.replace(/\s+/g, "-").toLowerCase()}.${ext}`;
+        // UUID filename — no company name or timestamp, unguessable even with bucket access
+        const filename = `${crypto.randomUUID()}.${ext}`;
         const { data: uploadData, error: uploadErr } = await supabase.storage
           .from("pitch-decks")
           .upload(filename, pitchDeckFile, { contentType: pitchDeckFile.type });
         if (!uploadErr && uploadData) {
-          pitchDeckUrl = supabase.storage.from("pitch-decks").getPublicUrl(uploadData.path).data.publicUrl;
+          // Store the storage path, not a public URL — Yewub generates signed URLs on demand
+          pitchDeckPath = uploadData.path;
         }
       }
       const { error: err } = await supabase.from("intake_submissions").insert({
@@ -504,7 +506,7 @@ export default function Apply() {
         stage: form.stage||null, capital_amount: form.capital_amount ? parseFloat(form.capital_amount) : null,
         capital_currency: form.capital_currency, capital_type: form.capital_type||null,
         contact_name: form.contact_name, contact_email: form.contact_email,
-        business_overview: { company_name:form.company_name, website:form.website, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description, company_type:form.company_type, holdco_country:form.holdco_country, opco_country:form.opco_country, founder_gender:form.founder_gender, employees_fulltime:form.employees_fulltime, employees_parttime:form.employees_parttime, pitch_deck_url:pitchDeckUrl },
+        business_overview: { company_name:form.company_name, website:form.website, sector:form.sector, country:form.country, year_founded:form.year_founded, legal_structure:form.legal_structure, stage:form.stage, description:form.description, company_type:form.company_type, holdco_country:form.holdco_country, opco_country:form.opco_country, founder_gender:form.founder_gender, employees_fulltime:form.employees_fulltime, employees_parttime:form.employees_parttime, pitch_deck_path:pitchDeckPath },
         capital_raise: { amount:form.capital_amount, currency:form.capital_currency, type:form.capital_type, preferred_investor:form.preferred_investor, use_capex_pct:form.use_capex_pct, use_working_capital_pct:form.use_working_capital_pct, use_refinance_pct:form.use_refinance_pct, use_other_pct:form.use_other_pct, use_of_funds:form.use_of_funds, last_valuation:form.last_valuation, timeline:form.timeline, previously_raised:form.previously_raised, previous_raise_details:form.previous_raise_details },
         financials: { revenue_y1:form.revenue_y1, revenue_y2:form.revenue_y2, revenue_y3:form.revenue_y3, ebitda_y1:form.ebitda_y1, ebitda_y2:form.ebitda_y2, ebitda_y3:form.ebitda_y3, gross_margin_pct:form.gross_margin_pct, fixed_opex_annual:form.fixed_opex_annual, monthly_burn:form.monthly_burn, cash_runway:form.cash_runway, largest_customer_pct:form.largest_customer_pct, hard_currency_pct:form.hard_currency_pct, current_debt:form.current_debt, debt_interest_rate:form.debt_interest_rate, cash_on_hand:form.cash_on_hand, has_audited_accounts:form.has_audited_accounts, audited_years:form.audited_years },
         projections: { proj_revenue_y1:form.proj_revenue_y1, proj_revenue_y2:form.proj_revenue_y2, proj_revenue_y3:form.proj_revenue_y3, proj_ebitda_y1:form.proj_ebitda_y1, proj_ebitda_y2:form.proj_ebitda_y2, proj_ebitda_y3:form.proj_ebitda_y3, growth_y1:form.growth_y1, growth_y2:form.growth_y2, growth_y3:form.growth_y3, growth_y4:form.growth_y4, growth_y5:form.growth_y5, has_financial_model:form.has_financial_model, annual_capex:form.annual_capex, tax_rate:form.tax_rate, receivables_days:form.receivables_days, payables_days:form.payables_days, inventory_days:form.inventory_days },
