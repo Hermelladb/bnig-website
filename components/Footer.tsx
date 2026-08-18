@@ -2,20 +2,6 @@
 
 import Link from "next/link";
 
-function DiamondMark() {
-  return (
-    <div style={{
-      width: 40, height: 40,
-      border: "1px solid var(--accent)",
-      transform: "rotate(45deg)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      flexShrink: 0,
-    }}>
-      <span style={{ transform: "rotate(-45deg)", color: "var(--accent)", fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1 }}>◆</span>
-    </div>
-  );
-}
-
 export default function Footer() {
   return (
     <footer style={{ background: "#011022", padding: "70px 0 30px" }}>
@@ -26,11 +12,12 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-              <DiamondMark />
-              <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/bnig-icon.png" alt="BNIG" style={{ height: 44, width: 44 }} />
+              <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
                 <span style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 600, color: "var(--text-primary)" }}>Blue Nile</span>
-                <span style={{ fontSize: 10, fontWeight: 500, color: "var(--accent)", letterSpacing: "0.18em", textTransform: "uppercase", marginTop: 2 }}>Innovation Group</span>
+                <span style={{ fontSize: 11, fontWeight: 400, color: "var(--accent)", letterSpacing: "0.12em", textTransform: "uppercase" }}>Innovation Group</span>
               </div>
             </div>
             <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8, maxWidth: 320 }}>
