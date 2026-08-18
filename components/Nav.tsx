@@ -10,20 +10,6 @@ const LINKS = [
   { label: "Contact",  href: "/contact" },
 ];
 
-function DiamondMark() {
-  return (
-    <div style={{
-      width: 44, height: 44,
-      border: "1px solid var(--accent)",
-      transform: "rotate(45deg)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      flexShrink: 0,
-    }}>
-      <span style={{ transform: "rotate(-45deg)", color: "var(--accent)", fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1 }}>◆</span>
-    </div>
-  );
-}
-
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -38,12 +24,9 @@ export default function Nav() {
       <div style={{ width: "min(92%, 1280px)", margin: "0 auto", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <DiamondMark />
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-            <span style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 600, color: "var(--text-primary)" }}>Blue Nile</span>
-            <span style={{ fontSize: 10, fontWeight: 500, color: "var(--accent)", letterSpacing: "0.18em", textTransform: "uppercase", marginTop: 2 }}>Innovation Group</span>
-          </div>
+        <Link href="/" style={{ display: "flex", alignItems: "center" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/bnig-logo-light.svg" alt="Blue Nile Innovation Group" style={{ height: 42, width: "auto" }} />
         </Link>
 
         {/* Desktop links */}

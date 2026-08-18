@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" width="420" height="140">
+  <defs>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5BA4D4"/>
+      <stop offset="100%" style="stop-color:#A8C8E8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Compass star icon -->
+  <g transform="translate(70, 70)">
+    <!-- Outer four points -->
+    <polygon points="0,-52 14,-14 0,-22 -14,-14" fill="url(#starGrad)"/>
+    <polygon points="52,0 14,14 22,0 14,-14" fill="url(#starGrad)"/>
+    <polygon points="0,52 -14,14 0,22 14,14" fill="url(#starGrad)"/>
+    <polygon points="-52,0 -14,-14 -22,0 -14,14" fill="url(#starGrad)"/>
+    <!-- Inner body square rotated 45° -->
+    <polygon points="0,-22 22,0 0,22 -22,0" fill="url(#starGrad)"/>
+    <!-- White centre cutout -->
+    <polygon points="0,-10 10,0 0,10 -10,0" fill="rgba(255,255,255,0.15)"/>
+    <!-- Gold centre dot -->
+    <circle cx="0" cy="0" r="3.5" fill="#C9A84C"/>
+  </g>
+
+  <!-- BNIG wordmark — off-white for dark backgrounds -->
+  <text x="140" y="86"
+        font-family="'Arial', 'Helvetica Neue', sans-serif"
+        font-size="52"
+        font-weight="800"
+        letter-spacing="6"
+        fill="#F0EDE8">BNIG</text>
+
+  <!-- Gold rule -->
+  <rect x="140" y="98" width="262" height="2" fill="#C9A84C"/>
+
+  <!-- Subtitle — muted light -->
+  <text x="141" y="118"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="400"
+        letter-spacing="4"
+        fill="rgba(240,237,232,0.45)">BLUE NILE INNOVATION GROUP</text>
+</svg>
