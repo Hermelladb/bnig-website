@@ -24,9 +24,13 @@ export default function Nav() {
       <div style={{ width: "min(92%, 1280px)", margin: "0 auto", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center" }}>
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/bnig-logo-light.svg" alt="Blue Nile Innovation Group" style={{ height: 42, width: "auto" }} />
+          <img src="/bnig-icon.png" alt="BNIG" style={{ height: 44, width: 44 }} />
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+            <span style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 600, color: "var(--text-primary)", letterSpacing: "0.04em" }}>BNIG</span>
+            <span style={{ fontSize: 9, fontWeight: 500, color: "var(--accent)", letterSpacing: "0.18em", textTransform: "uppercase" }}>Blue Nile Innovation Group</span>
+          </div>
         </Link>
 
         {/* Desktop links */}
